@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Mobil İşlemci Merkezi PRO | AnTuTu Karşılaştırma</title>
+
+<meta name="description" content="Mobil işlemciler, AnTuTu skorları ve karşılaştırma sistemi">
+<meta name="keywords" content="snapdragon, dimensity, apple, exynos, antutu, işlemci karşılaştırma">
+<meta name="robots" content="index, follow">
+
+<meta name="theme-color" content="#1e3a8a">
+
+<style>
+body{margin:0;font-family:Arial;background:#0f172a;color:#e2e8f0}
+header{background:#1e3a8a;padding:16px;text-align:center;position:sticky;top:0}
+.container{padding:15px;max-width:1000px;margin:auto}
+
+.search{width:100%;padding:12px;border-radius:10px;border:1px solid #334155;background:#0b1220;color:white}
+
+.card{
+background:#1e293b;
+padding:12px;
+margin:8px 0;
+border-radius:10px;
+display:flex;
+justify-content:space-between;
+cursor:pointer;
+}
+
+.score{color:#60a5fa}
+
+button{
+padding:8px 12px;
+margin-top:10px;
+border-radius:10px;
+border:1px solid #334155;
+background:#1e293b;
+color:white;
+cursor:pointer;
+}
+
+.modal{
+display:none;
+position:fixed;
+top:0;
+left:0;
+width:100%;
+height:100%;
+background:rgba(0,0,0,0.7);
+justify-content:center;
+align-items:center;
+}
+
+.modal-content{
+background:#0b1220;
+padding:20px;
+border-radius:12px;
+width:90%;
+max-width:500px;
+}
+</style>
+
+</head>
+
+<body>
+
+<header>
+<h2>📱 Mobil İşlemci Merkezi PRO</h2>
+</header>
+
+<div class="container">
+
+<input class="search" id="search" placeholder="Telefon modeli yaz (örn: S24)">
+<button onclick="findCPU()">Bul</button>
+<p id="result"></p>
+
+<h3>🔥 İşlemci Listesi</h3>
+<div id="list"></div>
+
+<h3>⚔️ Karşılaştır</h3>
+<button onclick="compare()">Karşılaştır</button>
+<div id="compare"></div>
+
+</div>
+
+<div class="modal" id="modal" onclick="closeModal()">
+<div class="modal-content" id="modalText"></div>
+</div>
+
+<script>
+
+let data=[
+{name:"Apple A17 Pro",score:1850000,cores:6,ghz:"3.7",ram:"8GB",devices:"iPhone 15 Pro"},
+{name:"Snapdragon 8 Gen 3",score:2000000,cores:8,ghz:"3.3",ram:"12GB",devices:"Galaxy S24 Ultra"},
+{name:"Dimensity 9300",score:1900000,cores:8,ghz:"3.2",ram:"12GB",devices:"Xiaomi 14"},
+{name:"Exynos 2400",score:1500000,cores:10,ghz:"3.2",ram:"8GB",devices:"Galaxy S24"},
+{name:"Google Tensor G4",score:1380000,cores:8,ghz:"3.0",ram:"12GB",devices:"Pixel 9"},
+{name:"Snapdragon 8 Gen 2",score:1600000,cores:8,ghz:"3.2",ram:"12GB",devices:"S23 Ultra"},
+{name:"Apple A16 Bionic",score:1550000,cores:6,ghz:"3.46",ram:"6GB",devices:"iPhone 14 Pro"}
+];
+
+function render(){
+let list=document.getElementById("list");
+list.innerHTML="";
+data.forEach(x=>{
+list.innerHTML+=`
+<div class="card" onclick="openModal('${x.name}')">
+${x.name}
+<span class="score">${x.score}</span>
+</div>`;
+});
+}
+
+function openModal(name){
+let d=data.find(x=>x.name===name);
+document.getElementById("modalText").innerHTML=`
+<h3>${d.name}</h3>
+<p>Antutu: ${d.score}</p>
+<p>Çekirdek: ${d.cores}</p>
+<p>GHz: ${d.ghz}</p>
+<p>RAM: ${d.ram}</p>
+<p>Cihaz: ${d.devices}</p>
+`;
+document.getElementById("modal").style.display="flex";
+}
+
+function closeModal(){
+document.getElementById("modal").style.display="none";
+}
+
+function findCPU(){
+let v=document.getElementById("search").value.toLowerCase();
+let map={
+"s24":"Snapdragon 8 Gen 3",
+"iphone 15":"Apple A17 Pro",
+"pixel 9":"Google Tensor G4"
+};
+document.getElementById("result").innerText=map[v]||"Bulunamadı";
+}
+
+function compare(){
+let a=data[0],b=data[1];
+document.getElementById("compare").innerHTML=`
+<p>${a.name} vs ${b.name}</p>
+<p>${a.score} vs ${b.score}</p>
+`;
+}
+
+render();
+
+</script>
+
+</body>
+</html>
